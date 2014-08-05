@@ -23,7 +23,7 @@ default['openvpn']['configure_default_server'] = true
 # Used by helper library to generate certificates/keys
 default['openvpn']['key']['ca_expire'] = 3650
 default['openvpn']['key']['expire']    = 3650
-default['openvpn']['key']['size']      = 1024
+default['openvpn']['key']['size']      = 2048
 default['openvpn']['key']['country']   = 'US'
 default['openvpn']['key']['province']  = 'CA'
 default['openvpn']['key']['city']      = 'San Francisco'
@@ -69,3 +69,10 @@ if node['openvpn']['type'] == 'server-bridge'
 else
   default['openvpn']['config']['dev'] = 'tun0'
 end
+
+# If using Chef-Solo, put users here
+default['openvpn']['users'] = [
+  {id: 'user0'},
+  {id: 'user1'},
+  {id: 'user2'}
+]

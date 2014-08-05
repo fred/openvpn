@@ -2,13 +2,16 @@
 # routes << node['openvpn']['push'] if node['openvpn'].attribute?('push')
 # node.default['openvpn']['routes'] = routes.flatten
 
+package 'openvpn' do
+  action :install
+end
+
 # in the case the key size is provided as string, no integer support in metadata (CHEF-4075)
 node.override['openvpn']['key']['size'] = node['openvpn']['key']['size'].to_i
 
 key_dir  = node['openvpn']['key_dir']
 key_size = node['openvpn']['key']['size']
 
-include_recipe 'yum-epel' if platform_family?('rhel')
 
 directory key_dir do
   owner 'root'
@@ -36,7 +39,6 @@ template '/etc/openvpn/server.up.sh' do
   owner 'root'
   group 'root'
   mode  '0755'
-  notifies :restart, 'service[openvpn]'
 end
 
 directory '/etc/openvpn/server.up.d' do
@@ -102,7 +104,6 @@ bash 'openvpn-server-key' do
 end
 
 openvpn_conf 'server' do
-  notifies :restart, 'service[openvpn]'
   only_if { node['openvpn']['configure_default_server'] }
   action :create
 end

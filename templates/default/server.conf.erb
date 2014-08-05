@@ -6,7 +6,7 @@
 
 <% node['openvpn']['config'].sort.each do |key, value| %>
 <% next if value.nil? -%>
-<%= key %> <%=
+<%= "#{key} " unless key=='routes' %><%=
   case value
   when String
     value

@@ -18,6 +18,5 @@
 #
 
 openvpn_conf 'client' do
-  notifies :restart, 'service[openvpn]'
   action :create
 end
